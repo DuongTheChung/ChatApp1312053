@@ -1,7 +1,18 @@
 import React from 'react';
-import { Grid , Header ,Dropdown} from 'semantic-ui-react';
+import { Grid , Header ,Dropdown,Image} from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { signOut } from '../../actions/authentication';
 
 class UserSideBar extends React.Component {
+
+    state={
+        user:this.props.user
+    };
+
+
+    handleSigout=()=>{
+        this.props.signOut();
+    }
 
     dropdownOptions=()=> [
         {
@@ -19,11 +30,12 @@ class UserSideBar extends React.Component {
           },
           {
             key: "signout",
-            text: <span>Sign Out</span>
+            text: <span onClick={this.handleSigout}>Sign Out</span>
           }
     ];
     
     render(){
+        const { user }=this.state;
             return(
                 <Grid style={{background: "#4c3c4c"}}>
                     <Grid.Column>
@@ -47,4 +59,11 @@ class UserSideBar extends React.Component {
     }
 }
 
-export default UserSideBar;
+
+const mapDispatchToProps=(dispatch)=>{
+    return {
+        signOut:()=>dispatch(signOut())
+    }
+}
+
+export default connect(null,mapDispatchToProps)(UserSideBar);

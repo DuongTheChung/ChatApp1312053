@@ -1,8 +1,13 @@
 import React from 'react';
 import { Grid, Form , Segment, Button, Header, Message, Icon } from 'semantic-ui-react';
 import { Link  } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signInWithGoogle } from '../../actions/authentication';
 
 class Login extends React.Component{
+    handleClick=()=>{
+        this.props.signWithGoogle();
+    }
     render(){
         return(
             <Grid textAlign="center" verticalAlign="middle" >
@@ -31,7 +36,7 @@ class Login extends React.Component{
                          type="password"
                      />
                      <Button  color="violet" size="large" >Submit</Button>
-                     <Button color="blue" size="large" >Login with Google</Button>     
+                     <Button onClick={this.handleClick} color="blue" size="large" >Login with Google</Button>     
                  </Segment>
              </Form>
              <Message>Don't have an account ?<Link to= "/register">Register</Link> </Message>
@@ -41,4 +46,10 @@ class Login extends React.Component{
     }
 }
 
-export default Login;
+const mapDispatchToProps=(dispatch)=>{
+    return {
+        signWithGoogle:()=>dispatch(signInWithGoogle())
+    }
+}
+
+export default connect(null,mapDispatchToProps)(Login);
