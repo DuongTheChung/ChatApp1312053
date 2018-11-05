@@ -1,15 +1,29 @@
 import React from 'react';
 import { Grid, Form , Segment, Button, Header, Message, Icon } from 'semantic-ui-react';
 import { Link  } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { signInWithGoogle } from '../../actions/authentication';
+import { withFirebase } from 'react-redux-firebase'
 
 class Login extends React.Component{
-    handleClick=()=>{
-        this.props.signWithGoogle();
+        state={
+            firebase:this.props.firebase
+        }
+
+        handleClick=()=>{
+        var provider = new this.state.firebase.auth.GoogleAuthProvider();
+        provider.addScope('profile');
+        provider.addScope('email');
+        this.state.firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(()=>{
+            console.log("Login success");
+        })
+        .catch(err=>{
+            console.log("success");
+        });
     }
     render(){
-        return(
+    return(
             <Grid textAlign="center" verticalAlign="middle" >
             <Grid.Column style={{maxWidth: 450 }}>
              <Header as="h1" icon color="violet" textAlign="center">
@@ -46,10 +60,4 @@ class Login extends React.Component{
     }
 }
 
-const mapDispatchToProps=(dispatch)=>{
-    return {
-        signWithGoogle:()=>dispatch(signInWithGoogle())
-    }
-}
-
-export default connect(null,mapDispatchToProps)(Login);
+export default withFirebase(Login);

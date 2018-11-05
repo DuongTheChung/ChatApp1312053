@@ -1,22 +1,25 @@
-import React from 'react';
-import UserSideBar from './userSidebar';
-import { Menu } from 'semantic-ui-react';
+import React from "react";
+import { Menu } from "semantic-ui-react";
+import UserSidebar from "./UserSidebar";
+import ListUsers from './ListUsers';
 
-class SideBar extends React.Component {
-    render(){
-        const { user }=this.props;
-        return(
-            <Menu
-                className="sidepannel"
-                size="large"
-                inverted
-                fixed="left"
-                vertical       
-            >
-            <UserSideBar user={user}/>
-            </Menu>
-        )
-    }
+class SidePanel extends React.Component {
+  render() {
+    const { user } = this.props;
+
+    return (
+      <Menu
+        size="large"
+        inverted
+        fixed="left"
+        vertical
+        style={{ background: "#4c3c4c", fontSize: "1.2rem" }}
+      >
+        <UserSidebar user={user} />
+        <ListUsers user={user} />
+      </Menu>
+    );
+  }
 }
 
-export default SideBar;
+export default SidePanel;

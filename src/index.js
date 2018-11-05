@@ -6,20 +6,19 @@ import 'semantic-ui-css/semantic.min.css';
 import Login from './components/account/login';
 import Register from './components/account/register';
 import Spinner from './Spinner';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider , connect } from 'react-redux';
 import rootReducer from './reducers/rootReducer';
 import thunk from 'redux-thunk';
 import { reduxFirestore,  getFirestore } from 'redux-firestore';
 import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 import { BrowserRouter as Router ,Switch,Route,withRouter } from 'react-router-dom';
-import {setUser , clearUser} from './actions/userAction';
-import { composeWithDevTools } from "redux-devtools-extension";
-
+import {setUser , clearUser} from './actions/index';
 import firebaseConfig from './config/firebase';
 
+
 const store=createStore(rootReducer,
-    composeWithDevTools(
+    compose(
         applyMiddleware(thunk.withExtraArgument({getFirestore,getFirebase})),
         reduxFirestore(firebaseConfig),
         reactReduxFirebase(firebaseConfig)

@@ -1,14 +1,19 @@
 import React from 'react';
 import { Grid , Header ,Dropdown,Image} from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { signOut } from '../../actions/authentication';
+import { withFirebase } from 'react-redux-firebase'
+import '../App.css';
 
 class UserSideBar extends React.Component {
     state={
-        user:this.props.user
+        user:this.props.user,
+        firebase:this.props.firebase
+
     };
     handleSigout=()=>{
-        this.props.signOut();
+        this.state.firebase
+        .auth()
+        .signOut()
+        .then(() => console.log("signed out!"));
     }
 
     dropdownOptions=()=> [
@@ -21,7 +26,7 @@ class UserSideBar extends React.Component {
     render(){
         const { user }=this.state;
             return(
-                <Grid style={{background: "#4c3c4c"}}>
+                <Grid className="usergrid">
                     <Grid.Column>
                         <Grid.Row className="usergrid_row">
                             <Header inverted floated="left" as="h2">
@@ -44,10 +49,5 @@ class UserSideBar extends React.Component {
     }
 }
 
-const mapDispatchToProps=(dispatch)=>{
-    return {
-        signOut:()=>dispatch(signOut())
-    }
-}
 
-export default connect(null,mapDispatchToProps)(UserSideBar);
+export default withFirebase(UserSideBar);
