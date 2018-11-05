@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 class App extends React.Component{
     render(){
         const { user }=this.props;
-        console.log(user);
         return (
         <Grid columns="equal" className="app" >
                 <SideBar user={user} />
@@ -19,7 +18,6 @@ class App extends React.Component{
         )
     }
 }
-
 
 const mapStateToProps=state=>({
     user:state.user.currentUser

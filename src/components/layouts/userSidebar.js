@@ -4,34 +4,18 @@ import { connect } from 'react-redux';
 import { signOut } from '../../actions/authentication';
 
 class UserSideBar extends React.Component {
-
     state={
         user:this.props.user
     };
-
-
     handleSigout=()=>{
         this.props.signOut();
     }
 
     dropdownOptions=()=> [
         {
-            key: "user",
-            text: (
-              <span>
-                Signed in as <strong>user</strong>
-              </span>
-            ),
-            disabled: true
-          },
-          {
-            key: "avatar",
-            text: <span>Change Avatar</span>
-          },
-          {
             key: "signout",
             text: <span onClick={this.handleSigout}>Sign Out</span>
-          }
+        }
     ];
     
     render(){
@@ -48,7 +32,8 @@ class UserSideBar extends React.Component {
                             <Dropdown 
                             trigger={
                             <span> 
-                                user
+                                <Image src={user.photoURL} spaced="right" avatar />
+                                {user.displayName}
                             </span>
                             } 
                             options={this.dropdownOptions()} />
@@ -58,7 +43,6 @@ class UserSideBar extends React.Component {
         )
     }
 }
-
 
 const mapDispatchToProps=(dispatch)=>{
     return {

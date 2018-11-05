@@ -11,8 +11,7 @@ class SideBar extends React.Component {
                 size="large"
                 inverted
                 fixed="left"
-                vertical
-                
+                vertical       
             >
             <UserSideBar user={user}/>
             </Menu>
