@@ -1,18 +1,23 @@
 import React from 'react';
 import './App.css';
 import { Grid } from 'semantic-ui-react';
-import SideBar from './layouts/Sidebar';
-import Messages from './layouts/Messages';
+import SideBar from './layouts/sidebars/Sidebar';
+import Messages from './layouts/messages/Messages';
 import { connect } from 'react-redux';
 
 class App extends React.Component{
     render(){
-        const { user }=this.props;
+        const { currentUser, currentChannel, isPrivateChannel }=this.props;
         return (
         <Grid columns="equal" className="app" >
-            <SideBar user={user} />
-            <Grid.Column style={{marginLeft:320}} >
-                <Messages user={user} />
+            <SideBar key={currentUser && currentUser.uid} currentUser={currentUser}  />
+            <Grid.Column style={{ marginLeft: 320 }} >
+                <Messages
+                    key={currentChannel && currentChannel.id}
+                    currentChannel={currentChannel}
+                    currentUser={currentUser}
+                    isPrivateChannel={isPrivateChannel}
+                />
             </Grid.Column>
         </Grid>
         )
@@ -20,7 +25,9 @@ class App extends React.Component{
 }
 
 const mapStateToProps=state=>({
-    user:state.user.currentUser
+    currentUser:state.user.currentUser,
+    currentChannel: state.channel.currentChannel,
+    isPrivateChannel: state.channel.isPrivateChannel
 });
 
 export default connect(mapStateToProps)(App);

@@ -1,13 +1,10 @@
 import React from 'react';
 import { Grid , Header ,Dropdown,Image} from 'semantic-ui-react';
 import { withFirebase } from 'react-redux-firebase'
-import '../App.css';
 
 class UserSideBar extends React.Component {
     state={
-        user:this.props.user,
-        firebase:this.props.firebase
-
+        firebase:this.props.firebase,
     };
     handleSigout=()=>{
         this.state.firebase
@@ -24,22 +21,22 @@ class UserSideBar extends React.Component {
     ];
     
     render(){
-        const { user }=this.state;
+        const { currentUser }=this.props;
             return(
                 <Grid className="usergrid">
                     <Grid.Column>
                         <Grid.Row className="usergrid_row">
                             <Header inverted floated="left" as="h2">
-                                <Header.Content>Nguoi dung</Header.Content>
+                                <Header.Content>ChatApp</Header.Content>
                             </Header>
                         </Grid.Row>
                         <Header style={{padding:'0.25em'}} inverted  as="h4">
                             <Dropdown 
                             trigger={
-                            <span> 
-                                <Image src={user.photoURL} spaced="right" avatar />
-                                {user.displayName}
-                            </span>
+                                <span>
+                                    <Image src={currentUser.photoURL} spaced="right" avatar />
+                                    {currentUser.displayName}
+                                </span>
                             } 
                             options={this.dropdownOptions()} />
                         </Header>

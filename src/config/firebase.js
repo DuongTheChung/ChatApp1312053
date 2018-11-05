@@ -1,8 +1,8 @@
 
-import firebase from 'firebase';
-import 'firebase/auth/dist/index.cjs';
-import 'firebase/database/dist/index.cjs';
-import 'firebase/storage/dist/index.cjs';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/storage';
  
 var config = {
     apiKey: "AIzaSyA_Hi4eopZeOR0i29A0tgz58cGwnG6E7p8",
