@@ -40,6 +40,7 @@ class Login extends React.Component{
             });
         }
     };
+    
     /* Login with google */
     handleClickWithGoogle=()=>{
         var provider = new this.state.firebase.auth.GoogleAuthProvider();

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu , Icon  ,Image }  from 'semantic-ui-react';
+import { Menu , Icon  ,Image, Input, Segment }  from 'semantic-ui-react';
 import { setCurrentChannel, setPrivateChannel } from "../../../actions/index";
 import { connect } from 'react-redux'
 
@@ -10,7 +10,10 @@ class ListUsers extends Component {
         users:[],
         usersRef:this.props.usersRef,
         connectedRef:this.props.connectedRef,
-        presenceRef:this.props.presenceRef
+        presenceRef:this.props.presenceRef,
+        searchString: "",
+        searchLoading: false,
+        searchResults: []
     }
 
     componentDidMount(){
@@ -73,7 +76,8 @@ class ListUsers extends Component {
         const channelId = this.getChannelId(user.uid);
         const channelData = {
           id: channelId,
-          name: user.name
+          name: user.name,
+          avatar:user.avatar
         };
         this.props.setCurrentChannel(channelData);
         this.props.setPrivateChannel(true);
@@ -91,9 +95,34 @@ class ListUsers extends Component {
         this.setState({ activeChannel: userId });
       };
 
+      
+      /*Search user with key word  */
+      handleSearchChange = event => {
+        this.setState(
+          {
+            searchString: event.target.value,
+            searchLoading: true
+          },
+          () => this.handleSearchMessages()
+        );
+      };
+
+      handleSearchMessages = () => {
+        const usersSearch = [...this.state.users];
+        const regex = new RegExp(this.state.searchString, "gi");
+        const searchResults = usersSearch.reduce((acc, user) => {
+          if (user.name && user.name.match(regex)) {
+            acc.push(user);
+          }
+          return acc;
+        }, []);
+        this.setState({ searchResults });
+        console.log(searchResults);
+        setTimeout(() => this.setState({ searchLoading: false }), 1000);   
+      };
 
     render() {
-        const { users, activeChannel }=this.state;
+        const { users, activeChannel, searchString, searchResults, searchLoading }=this.state;
         return (
             <Menu.Menu className="menu">
                 <Menu.Item>
@@ -102,20 +131,47 @@ class ListUsers extends Component {
                     </span>{" "}
                     ({users.length})
                 </Menu.Item>
-                {users.map(user => (
-                <Menu.Item
+
+                <Menu.Item>
+                  <Input
+                    loading={searchLoading}
+                    onChange={this.handleSearchChange}
+                    size="mini"
+                    icon="search"
+                    name="searchString"
+                    placeholder="Search Messages"
+                  />
+                </Menu.Item>
+                {searchString ?
+                searchResults.map(user => (
+                  <Menu.Item
                     key={user.uid}
                     active={user.uid === activeChannel}
                     onClick={() => this.changeChannel(user)}
                     style={{ opacity: 0.7, fontStyle: "italic" }}
-                >
-                    <Image src={user.avatar} spaced="right" avatar />
+                  >
+                  <Image src={user.avatar} spaced="right" avatar />
                     <Icon
                     name="circle"
                     color={this.isUserOnline(user) ? "green" : "red"}
                     />
                     {user.name}
-                </Menu.Item>
+                  </Menu.Item>
+                )):
+                users.map(user => (
+                  <Menu.Item
+                    key={user.uid}
+                    active={user.uid === activeChannel}
+                    onClick={() => this.changeChannel(user)}
+                    style={{ opacity: 0.7, fontStyle: "italic" }}
+                  >
+                  <Image src={user.avatar} spaced="right" avatar />
+                    <Icon
+                    name="circle"
+                    color={this.isUserOnline(user) ? "green" : "red"}
+                    />
+                    {user.name}
+                  </Menu.Item>
                 ))}
           </Menu.Menu>
         );

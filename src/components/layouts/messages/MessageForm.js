@@ -10,7 +10,7 @@ class MessageForm extends Component {
         channel: this.props.currentChannel,
         user: this.props.currentUser,
         loading: false,
-        errors: []
+        errors: [],
     }
 
     handleChange=event=>{
@@ -60,15 +60,6 @@ class MessageForm extends Component {
           });
         }
     };
-
-    
-  getPath = () => {
-    if (this.props.isPrivateChannel) {
-      return `chat/private-${this.state.channel.id}`;
-    } else {
-      return "chat/public";
-    }
-  };
 
     
     render() {
